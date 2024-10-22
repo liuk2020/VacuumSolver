@@ -1,7 +1,9 @@
 [build-system]
 requires = [
     "meson",
-    "meson-python"
+    "meson-python",
+    "ninja",
+    "numpy"
 ]
 build-backend = "mesonpy"
 
@@ -25,5 +27,6 @@ classifiers = [
     "Topic :: Scientific/Engineering",
 ]
 dependencies = [
-    "numpy"
+    "numpy",
+    "tfpy"
 ]
