@@ -34,22 +34,22 @@ fortranobject_dep = declare_dependency(
 )
 
 
-add_files = files( 
+test_files = files( 
     'vacuum/fortran/test_add_numbers.f90'
 )
-add_translated = custom_target(
-    'add_fortran',
-    input : add_files,
-    output: 'add_fortranmodule.c',
-    command : [py3, '-m', 'numpy.f2py', '@INPUT@', '-m', 'add_fortran'],
+test_translated = custom_target(
+    'test_fortran',
+    input : test_files,
+    output: 'test_fortranmodule.c',
+    command : [py3, '-m', 'numpy.f2py', '@INPUT@', '-m', 'test_fortran'],
     install : true,
     install_dir : py3.get_install_dir()
 )
 
 py3.extension_module(
-    'add_fortran', 
-    add_files, 
-    add_translated,
+    'test_fortran', 
+    test_files, 
+    test_translated,
     dependencies: fortranobject_dep,
     install: true,
     fortran_args: f90flags
