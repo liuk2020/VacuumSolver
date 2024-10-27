@@ -18,10 +18,7 @@ incdir_numpy = run_command(py3,
 ).stdout().strip()
 inc_np = include_directories(incdir_numpy)
 
-incdir_f2py = run_command(py3,
-    ['-c', 'import os; os.chdir(".."); import numpy.f2py; print(numpy.f2py.get_include())'],
-    check : true
-).stdout().strip()
+incdir_f2py = incdir_numpy / '..' / '..' / 'f2py' / 'src'
 inc_f2py = include_directories(incdir_f2py)
 fortranobject_c = incdir_f2py / 'fortranobject.c'
 
@@ -37,23 +34,26 @@ fortranobject_dep = declare_dependency(
 )
 
 
-fortran_files = files(
-    'vacuum/fortran/pyvariables.f90', 
-    'vacuum/fortran/basefunction.f90'
+add_files = files( 
+    'vacuum/fortran/test_add_numbers.f90'
 )
-translated = custom_target('vacuum_fortran',
-  input : fortran_files,
-  output: 'vacuum_fortranmodule.c',
-  command : [py3, '-m', 'numpy.f2py', '@INPUT@', '-m', 'vacuum_fortran'],
-  install : true,
-  install_dir : py3.get_install_dir()
+add_translated = custom_target(
+    'add_fortran',
+    input : add_files,
+    output: 'add_fortranmodule.c',
+    command : [py3, '-m', 'numpy.f2py', '@INPUT@', '-m', 'add_fortran'],
+    install : true,
+    install_dir : py3.get_install_dir()
 )
 
-py3.extension_module('vacuum_fortran', 
-                     fortran_files, translated,
-                     dependencies: fortranobject_dep,
-                     install: true,
-                     fortran_args: f90flags)
+py3.extension_module(
+    'add_fortran', 
+    add_files, 
+    add_translated,
+    dependencies: fortranobject_dep,
+    install: true,
+    fortran_args: f90flags
+)
 
 
 py3.install_sources(
