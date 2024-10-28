@@ -46,10 +46,31 @@ test_translated = custom_target(
     install_dir : py3.get_install_dir()
 )
 
+basefunction_files = files( 
+    'vacuum/fortran/basefunction.f90'
+)
+basefunction_translated = custom_target(
+    'basefunction_fortran',
+    input : basefunction_files,
+    output: 'basefunction_fortranmodule.c',
+    command : [py3, '-m', 'numpy.f2py', '@INPUT@', '-m', 'basefunction_fortran'],
+    install : true,
+    install_dir : py3.get_install_dir()
+)
+
 py3.extension_module(
     'test_fortran', 
     test_files, 
     test_translated,
+    dependencies: fortranobject_dep,
+    install: true,
+    fortran_args: f90flags
+)
+
+py3.extension_module(
+    'basefunction_fortran', 
+    basefunction_files, 
+    basefunction_translated,
     dependencies: fortranobject_dep,
     install: true,
     fortran_args: f90flags
