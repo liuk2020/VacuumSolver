@@ -34,42 +34,22 @@ fortranobject_dep = declare_dependency(
 )
 
 
-basefunction_files = files( 
-    'vacuum/fortran/basefunction.f90'
-)
-basefunction_translated = custom_target(
-    'basefunction_fortran',
-    input : basefunction_files,
-    output: 'basefunction_fortranmodule.c',
-    command : [py3, '-m', 'numpy.f2py', '@INPUT@', '-m', 'basefunction_fortran'],
-    install : true,
-    install_dir : py3.get_install_dir()
-)
-py3.extension_module(
-    'basefunction_fortran', 
-    basefunction_files, 
-    basefunction_translated,
-    dependencies: fortranobject_dep,
-    install: true,
-    fortran_args: f90flags
-)
-
-
-preset_files = files( 
+vacuum_files = files( 
+    'vacuum/fortran/basefunction.f90',
     'vacuum/fortran/preset.f90'
 )
-preset_translated = custom_target(
-    'preset_fortran',
-    input : preset_files,
-    output: 'preset_fortranmodule.c',
-    command : [py3, '-m', 'numpy.f2py', '@INPUT@', '-m', 'preset_fortran'],
+vacuum_translated = custom_target(
+    'vacuum_fortran',
+    input : vacuum_files,
+    output: 'vacuum_fortranmodule.c',
+    command : [py3, '-m', 'numpy.f2py', '@INPUT@', '-m', 'vacuum_fortran'],
     install : true,
     install_dir : py3.get_install_dir()
 )
 py3.extension_module(
-    'preset_fortran', 
-    preset_files, 
-    preset_translated,
+    'vacuum_fortran', 
+    vacuum_files, 
+    vacuum_translated,
     dependencies: fortranobject_dep,
     install: true,
     fortran_args: f90flags
@@ -79,6 +59,7 @@ py3.extension_module(
 py3.install_sources(
     'vacuum/__init__.py',
     'vacuum/axis.py',
+    'vacuum/fortraninterface.py',
     'vacuum/vacuumProblem.py',
     subdir: 'vacuum'
 )

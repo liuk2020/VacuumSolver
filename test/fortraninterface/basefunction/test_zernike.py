@@ -1,4 +1,4 @@
-import basefunction_fortran
+from vacuum.fortraninterface import get_zernike
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
@@ -8,7 +8,7 @@ matplotlib.rcParams['text.usetex'] = True
 rarr = np.linspace(0, 1, 64)
 valuearr = list()
 for _i, r in enumerate(rarr):
-    valuearr.append(basefunction_fortran.get_zernike(r, 4, 2))
+    valuearr.append(get_zernike(r, 4, 2))
 valuearr = np.array(valuearr)
     
 lradarr = [0, 1, 2, 2, 3, 4]

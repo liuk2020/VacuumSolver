@@ -1,4 +1,4 @@
-subroutine setresolution( Mpol, Ntor, Nfp, mn, im, in )
+subroutine set_resolution( Mpol, Ntor, Nfp, mn, im, in )
 
   implicit none
 
@@ -21,4 +21,4 @@ subroutine setresolution( Mpol, Ntor, Nfp, mn, im, in )
    enddo
   enddo
 
-end subroutine setresolution
+end subroutine set_resolution
