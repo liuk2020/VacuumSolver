@@ -34,18 +34,6 @@ fortranobject_dep = declare_dependency(
 )
 
 
-test_files = files( 
-    'vacuum/fortran/test_add_numbers.f90'
-)
-test_translated = custom_target(
-    'test_fortran',
-    input : test_files,
-    output: 'test_fortranmodule.c',
-    command : [py3, '-m', 'numpy.f2py', '@INPUT@', '-m', 'test_fortran'],
-    install : true,
-    install_dir : py3.get_install_dir()
-)
-
 basefunction_files = files( 
     'vacuum/fortran/basefunction.f90'
 )
@@ -57,16 +45,6 @@ basefunction_translated = custom_target(
     install : true,
     install_dir : py3.get_install_dir()
 )
-
-py3.extension_module(
-    'test_fortran', 
-    test_files, 
-    test_translated,
-    dependencies: fortranobject_dep,
-    install: true,
-    fortran_args: f90flags
-)
-
 py3.extension_module(
     'basefunction_fortran', 
     basefunction_files, 
@@ -77,8 +55,30 @@ py3.extension_module(
 )
 
 
+preset_files = files( 
+    'vacuum/fortran/preset.f90'
+)
+preset_translated = custom_target(
+    'preset_fortran',
+    input : preset_files,
+    output: 'preset_fortranmodule.c',
+    command : [py3, '-m', 'numpy.f2py', '@INPUT@', '-m', 'preset_fortran'],
+    install : true,
+    install_dir : py3.get_install_dir()
+)
+py3.extension_module(
+    'preset_fortran', 
+    preset_files, 
+    preset_translated,
+    dependencies: fortranobject_dep,
+    install: true,
+    fortran_args: f90flags
+)
+
+
 py3.install_sources(
     'vacuum/__init__.py',
+    'vacuum/axis.py',
     'vacuum/vacuumProblem.py',
     subdir: 'vacuum'
 )
