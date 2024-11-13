@@ -49,16 +49,20 @@ class Vacuum():
     def solve(self, mpol: int, ntor: int, lrad: int):
         self.preset(mpol, ntor)
 
-    def preset(self, mpol, ntor):
+    def preset(self, mpol, ntor, lrad):
         self._set_resolution(mpol, ntor)
+        from .fortraninterface import get_zernike, get_NAdof
+        self.zernike_boundary = get_zernike(1, lrad, mpol)
+        self.zernike_axis = get_zernike(0, lrad, mpol)
+        self.nDofs = get_NAdof(mpol, ntor, lrad, self.stellSym)
         
     def _set_resolution(self, mpol, ntor):
-        from .fortraninterface import set_resolution
+        from .fortraninterface import get_resolution
         self.mpol, self.ntor = mpol, ntor
-        self.xm, self.xn = set_resolution(self.mpol, self.ntor, self.nfp)
+        self.xm, self.xn = get_resolution(self.mpol, self.ntor, self.nfp)
         # extra-enhanced resolution for metrics
         self.mpol_metric, self.ntor_metric = 4*self.mpol, 4*self.ntor
-        self.xm_metric, self.xn_metric = set_resolution(self.mpol_metric, self.ntor_metric, self.nfp)
+        self.xm_metric, self.xn_metric = get_resolution(self.mpol_metric, self.ntor_metric, self.nfp)
         
 
 

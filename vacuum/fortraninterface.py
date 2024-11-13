@@ -23,6 +23,10 @@ def get_zernike_rm(r: float, lrad: int, mpol: int) -> np.ndarray:
 
 
 # preset.f90
-def set_resolution(mpol: int, ntor: int, nfp: int) -> Tuple[np.ndarray]:
+def get_resolution(mpol: int, ntor: int, nfp: int) -> Tuple[np.ndarray]:
     mn = 1 + ntor + mpol*(2*ntor+1)
-    return vacuum_fortran.set_resolution(mpol, ntor, nfp, mn)
+    return vacuum_fortran.get_resolution(mpol, ntor, nfp, mn)
+
+def get_NAdof(mpol: int, ntor: int, lrad: int, stellsym: bool) -> int:
+    mn = 1 + ntor + mpol*(2*ntor+1)
+    return vacuum_fortran.get_NAdof(mpol, ntor, mn, lrad, int(stellsym))
