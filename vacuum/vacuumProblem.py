@@ -54,7 +54,7 @@ class Vacuum():
         from .fortraninterface import get_zernike, get_NAdof
         self.zernike_boundary = get_zernike(1, lrad, mpol)
         self.zernike_axis = get_zernike(0, lrad, mpol)
-        self.nDofs = get_NAdof(mpol, ntor, lrad, self.stellSym)
+        # self.nDofs = get_NAdof(mpol, ntor, lrad, self.stellSym)
         
     def _set_resolution(self, mpol, ntor):
         from .fortraninterface import get_resolution

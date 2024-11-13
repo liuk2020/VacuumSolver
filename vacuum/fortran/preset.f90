@@ -24,11 +24,13 @@ subroutine get_resolution( Mpol, Ntor, Nfp, mn, im, in )
 end subroutine get_resolution
 
 
-subroutine get_NAdof(Mpol, Ntor, mn, Lrad, Istellsym, NAdof)
+subroutine get_dofs(Mpol, Ntor, mn, Lrad, Istellsym, NAdof)
  
   implicit none
+
   integer, intent(in)  :: Mpol, Ntor, mn, Lrad, Istellsym
   integer, intent(out) :: NAdof 
+
   logical              :: YESstellsym, NOTstellsym
   integer              :: zerdof
   integer              :: ii, jj
@@ -36,7 +38,7 @@ subroutine get_NAdof(Mpol, Ntor, mn, Lrad, Istellsym, NAdof)
   select case( Istellsym )
   case( 0 )    ; YESstellsym = .false. ; NOTstellsym = .true.
   case( 1 )    ; YESstellsym = .true.  ; NOTstellsym = .false.
-  case default ;
+  case default ; YESstellsym = .true.  ; NOTstellsym = .false.
   end select
 
   zerdof = 0                                       ! count Zernike degree of freedom 30 Jun 19
@@ -84,4 +86,4 @@ subroutine get_NAdof(Mpol, Ntor, mn, Lrad, Istellsym, NAdof)
     if (NOTstellsym) NAdof = NAdof - (2 * Ntor + 1)
   endif
 
-end subroutine
+end subroutine get_dofs
